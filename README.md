@@ -2,15 +2,13 @@
 
 This tool automatically fetches "communicated cases" from the ECHR website, generates a one-line keyword summary for each case using OpenAI, and saves everything as a formatted Word document.
 
-The `samples/` folder contains an example of what the output looks like.
-
 ---
 
 ## What you need before starting
 
-- A computer running Windows or Mac
-- An internet connection
+- A Python installation (available from [python.org/downloads](https://www.python.org/downloads/); see below)
 - An OpenAI API key — [get one here](https://platform.openai.com/api-keys) (you need a paid account)
+- An internet connection
 
 ---
 
@@ -20,7 +18,7 @@ Do these steps once, in order. You won't need to repeat them.
 
 ### Step 1 — Install Python
 
-Download and install Python from [python.org/downloads](https://www.python.org/downloads/). Click the big yellow button and follow the installer.
+Download and install Python from [python.org/downloads](https://www.python.org/downloads/). 
 
 > **Windows users:** during installation, make sure to tick the box that says **"Add Python to PATH"** before clicking Install.
 
@@ -112,8 +110,6 @@ The Word document contains:
 - A title page with the date range
 - A table of contents with one entry per case (keyword summary in italics)
 - A full section per case with the heading, application number, relevant articles, keyword summary, facts, and questions to the parties
-
-See the `samples/` folder for a concrete example.
 
 ---
 
