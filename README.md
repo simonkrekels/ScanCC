@@ -1,100 +1,134 @@
 # ECHR Communicated Cases Scanner
 
-Automatically fetches ECHR "communicated cases" from HUDOC, generates one-line keyword summaries with OpenAI, and produces a formatted Word document.
+This tool automatically fetches "communicated cases" from the ECHR website, generates a one-line keyword summary for each case using OpenAI, and saves everything as a formatted Word document.
+
+The `samples/` folder contains an example of what the output looks like.
 
 ---
 
-## Requirements
+## What you need before starting
 
-- **Python 3.10 or newer** — [Download here](https://www.python.org/downloads/)
-- An **OpenAI API key** — [Get one here](https://platform.openai.com/api-keys)
-- Internet connection (to reach HUDOC and OpenAI)
+- A computer running Windows or Mac
+- An internet connection
+- An OpenAI API key — [get one here](https://platform.openai.com/api-keys) (you need a paid account)
 
 ---
 
-## Setup (one-time)
+## One-time setup
 
-### 1. Install Python packages
+Do these steps once, in order. You won't need to repeat them.
 
-Open a terminal (on Mac: **Terminal** app; on Windows: **Command Prompt** or **PowerShell**) and run:
+### Step 1 — Install Python
+
+Download and install Python from [python.org/downloads](https://www.python.org/downloads/). Click the big yellow button and follow the installer.
+
+> **Windows users:** during installation, make sure to tick the box that says **"Add Python to PATH"** before clicking Install.
+
+Once installed, you can verify it worked by opening a terminal and typing `python --version`. You should see a version number.
+
+- On **Mac**: open the **Terminal** app (search for it with Spotlight — press `Cmd + Space` and type "Terminal")
+- On **Windows**: open **Command Prompt** (press the Windows key, type "cmd", press Enter)
+
+### Step 2 — Download this project
+
+Click the green **Code** button at the top of this page, then click **Download ZIP**. Once downloaded, unzip the folder somewhere easy to find, like your Desktop.
+
+### Step 3 — Open a terminal in the project folder
+
+You need to navigate the terminal into the folder you just unzipped.
+
+**On Mac:**
+1. Open Terminal
+2. Type `cd ` (with a space after it, don't press Enter yet)
+3. Drag the unzipped project folder from Finder into the Terminal window — it will fill in the path automatically
+4. Press Enter
+
+**On Windows:**
+1. Open the unzipped project folder in File Explorer
+2. Click on the address bar at the top (where the folder path is shown)
+3. Type `cmd` and press Enter — a Command Prompt window will open directly in that folder
+
+### Step 4 — Install the required packages
+
+In the terminal, paste the following and press Enter:
 
 ```
 pip install -r requirements.txt
 ```
 
-If `pip` is not recognised, try:
+If you see an error saying `pip` was not found, try:
 
 ```
 pip3 install -r requirements.txt
 ```
 
-### 2. Set your OpenAI API key
+Wait for it to finish. This only needs to be done once.
+
+### Step 5 — Add your OpenAI API key
 
 1. In the project folder, find the file called `.env.example`
-2. Make a copy of it and rename the copy to `.env`
-3. Open `.env` in any text editor (Notepad, TextEdit, etc.)
-4. Replace `sk-...` with your actual OpenAI API key:
+2. Make a copy of it and rename the copy to `.env` (just remove the `.example` part)
+3. Open `.env` with any text editor (Notepad on Windows, TextEdit on Mac)
+4. Replace `sk-...` with your actual OpenAI API key, so it looks like:
 
 ```
 OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxxxxx
 ```
 
-5. Save and close the file.
+5. Save and close the file
 
-> **Note:** The script will still run without an API key — it will use `[Summary not available]` as a placeholder for keyword summaries.
+> **Note:** if you skip this step, the script will still run but will use `[Summary not available]` instead of real keyword summaries.
 
 ---
 
 ## Running the script
 
-In the terminal, navigate to the project folder:
+Every time you want to generate a document:
 
-```
-cd /path/to/echr-communicated-cases
-```
-
-Then run:
+1. Open a terminal in the project folder (same as Step 3 above)
+2. Run:
 
 ```
 python main.py
 ```
 
-You will be asked three questions:
+If that gives an error, try `python3 main.py` instead.
 
-| Prompt | Example |
-|--------|---------|
-| Start date (YYYY-MM-DD) | `2026-01-26` |
-| End date (YYYY-MM-DD) | `2026-02-09` |
+3. The script will ask you three questions:
+
+| Question | Example answer |
+|----------|----------------|
+| Start date | `2026-01-26` |
+| End date | `2026-02-09` |
 | Output filename | `communicated_cases.docx` |
 
-The script will then:
-1. Fetch matching cases from the ECHR HUDOC database
-2. Download the full text of each case
-3. Generate a one-line keyword summary via OpenAI
-4. Save a formatted Word document to the project folder
+4. The script will fetch the cases, generate summaries, and save a Word document in the project folder.
 
 ---
 
-## Output format
+## What the output looks like
 
-The `.docx` file contains:
-- A **title page** with the date range
-- A **table of contents** — one entry per case with keyword summary in italics
-- A **full section per case** with heading, application number, articles, keyword summary subtitle, facts, and questions to the parties
+The Word document contains:
+- A title page with the date range
+- A table of contents with one entry per case (keyword summary in italics)
+- A full section per case with the heading, application number, relevant articles, keyword summary, facts, and questions to the parties
+
+See the `samples/` folder for a concrete example.
 
 ---
 
 ## Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
+| Problem | What to do |
+|---------|------------|
 | `ModuleNotFoundError: No module named 'requests'` | Run `pip install -r requirements.txt` again |
-| `No cases found` | Check that the date range is correct; try a wider range |
-| Summaries say `[Summary not available]` | Check that your `.env` file exists and contains a valid API key |
+| `No cases found` | Check that the date range is correct and try a slightly wider range |
+| Summaries say `[Summary not available]` | Make sure your `.env` file exists and contains a valid API key |
 | `python: command not found` | Use `python3` instead of `python` |
+| `.env.example` doesn't show up in the folder | Your file browser may be hiding files that start with a dot — on Mac, press `Cmd + Shift + .` to show hidden files |
 
 ---
 
 ## Privacy
 
-Case texts are fetched directly from the public ECHR HUDOC database. The subject matter text of each case is sent to the OpenAI API for summarisation. Do not run the script on confidential documents.
+Case texts are fetched from the public ECHR HUDOC database. The text of each case is sent to the OpenAI API to generate the keyword summary. Do not use this tool on confidential documents.
